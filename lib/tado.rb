@@ -26,8 +26,52 @@ module Tado
                 http.request(req)
             end
             response = JSON.parse(res.body)
-            puts response
             response['access_token']
+        end
+    end
+
+    class Client
+        def initialize(access_token:)
+            @access_token = access_token
+        end
+
+        def me
+            me_data = make_http_request(url: 'https://my.tado.com/api/v2/me')
+            Me.new(data: me_data, client: self)
+        end
+
+        def make_http_request(url:)
+            uri = URI(url)
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = true
+
+            req = Net::HTTP::Get.new(uri)
+            req['Authorization'] = "Bearer #{@access_token}"
+            req['Content-Type'] = 'application/json'
+
+            res = http.request(req)
+            JSON.parse(res.body)
+        end
+    end
+
+    class Me
+        attr_reader :name, :email, :username, :id
+
+        def initialize(data:, client:)
+            @data = data
+            @name = data["name"]
+            @email = data["email"]
+            @username = data["username"]
+            @id = data["id"]
+            @client = client
+        end
+
+        def homes
+            @data['homes']
+        end
+
+        def to_s
+            "Name: #{@name}, Email: #{@email}, Username: #{@username}, ID: #{@id}, Homes: #{@homes}"
         end
     end
 end
