@@ -4,7 +4,8 @@ a Ruby client for the tado thermostat API
 
 ## Current and Planned Features
 
-- [ ] OAuth Authentification
+- [x] OAuth Authentification
+- [x] Get user (me) data
 - [ ] Get/Set temperature of a room
 
 ## Installation
