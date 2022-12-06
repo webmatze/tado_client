@@ -27,7 +27,12 @@ gem install tado_client
 Get an access token:
 
 ```ruby
-access_token = Tado::OAuth.access_token(username: 'username', password: 'password')
+access_token = Tado::OAuth.access_token(
+    username: 'username', 
+    password: '<password>', 
+    client_id: 'client-id', 
+    client_secret: '<secret>'
+)
 ```
 
 Set temperature for a home zone:
